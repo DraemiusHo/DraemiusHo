@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>論文閱讀筆記：Quantum Approximate Optimization Algorithm (QAOA) - 何明璟</title>
+    <link rel="stylesheet" href="../styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <h1 class="nav-title"><a href="../index.html">何明璟</a></h1>
+                <ul class="nav-menu">
+                    <li><a href="../index.html#about">關於我</a></li>
+                    <li><a href="../index.html#cv">履歷</a></li>
+                    <li><a href="../index.html#projects">專案</a></li>
+                    <li><a href="../index.html#research">研究</a></li>
+                    <li><a href="../index.html#notes">學習筆記</a></li>
+                    <li><a href="../index.html#blog">部落格</a></li>
+                    <li><a href="../index.html#contact">聯絡</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="article-main">
+        <div class="container">
+            <article class="article-content">
+                <header class="article-header">
+                    <h1>論文閱讀筆記：Quantum Approximate Optimization Algorithm (QAOA)</h1>
+                    <div class="article-meta">
+                        <span class="date">2025年1月10日</span>
+                        <span class="category">論文閱讀</span>
+                        <div class="tags">
+                            <span class="tag">論文閱讀</span>
+                            <span class="tag">QAOA</span>
+                            <span class="tag">量子優化</span>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="article-body">
+                    <div class="paper-info">
+                        <h2>論文資訊</h2>
+                        <ul>
+                            <li><strong>標題：</strong>A Quantum Approximate Optimization Algorithm</li>
+                            <li><strong>作者：</strong>Edward Farhi, Jeffrey Goldstone, Sam Gutmann</li>
+                            <li><strong>發表年份：</strong>2014</li>
+                            <li><strong>期刊：</strong>arXiv:1411.4028</li>
+                            <li><strong>DOI：</strong><a href="https://arxiv.org/abs/1411.4028" target="_blank">https://arxiv.org/abs/1411.4028</a></li>
+                        </ul>
+                    </div>
+
+                    <h2>摘要與動機</h2>
+
+                    <p>QAOA（Quantum Approximate Optimization Algorithm）是一個變分量子演算法，專門設計來解決組合優化問題。這個演算法特別適合在 NISQ（Noisy Intermediate-Scale Quantum）時代的量子計算機上運行，因為它只需要相對較淺的量子電路。</p>
+
+                    <p>論文的主要動機是找到一個能在近期量子計算機上實現量子優勢的演算法，特別是針對 NP-hard 的組合優化問題。</p>
+
+                    <h2>演算法原理</h2>
+
+                    <h3>問題設定</h3>
+
+                    <p>QAOA 主要解決以下形式的組合優化問題：</p>
+
+                    <div class="math-block">
+                        $$\max_{z \in \{0,1\}^n} C(z)$$
+                    </div>
+
+                    <p>其中 $C(z)$ 是目標函數，$z$ 是 $n$ 位元的二進制字串。我們可以將這個問題轉換為量子哈密頓量：</p>
+
+                    <div class="math-block">
+                        $$H_C = \sum_{\alpha} C_\alpha$$
+                    </div>
+
+                    <p>其中每個 $C_\alpha$ 是作用在問題相關量子位元子集上的對角算符。</p>
+
+                    <h3>QAOA 電路結構</h3>
+
+                    <p>QAOA 使用參數化的量子電路，其結構如下：</p>
+
+                    <div class="math-block">
+                        $$|\gamma, \beta\rangle = e^{-i\beta_p H_B} e^{-i\gamma_p H_C} \cdots e^{-i\beta_1 H_B} e^{-i\gamma_1 H_C} |+\rangle^{\otimes n}$$
+                    </div>
+
+                    <p>其中：</p>
+                    <ul>
+                        <li>$|+\rangle^{\otimes n}$ 是初始的均勻疊加態</li>
+                        <li>$H_C$ 是問題哈密頓量</li>
+                        <li>$H_B = \sum_{i=1}^n X_i$ 是混合哈密頓量</li>
+                        <li>$\gamma = (\gamma_1, \ldots, \gamma_p)$ 和 $\beta = (\beta_1, \ldots, \beta_p)$ 是變分參數</li>
+                        <li>$p$ 是 QAOA 的層數</li>
+                    </ul>
+
+                    <h3>目標函數</h3>
+
+                    <p>QAOA 的目標是最大化期望值：</p>
+
+                    <div class="math-block">
+                        $$F_p(\gamma, \beta) = \langle \gamma, \beta | H_C | \gamma, \beta \rangle$$
+                    </div>
+
+                    <p>這個優化問題可以用經典的優化演算法來解決，如梯度下降或其他啟發式方法。</p>
+
+                    <h2>具體實例：Max-Cut 問題</h2>
+
+                    <p>論文中詳細分析了 Max-Cut 問題作為 QAOA 的應用實例。</p>
+
+                    <h3>問題定義</h3>
+
+                    <p>給定一個圖 $G = (V, E)$，Max-Cut 問題要求找到一個頂點分割，使得被切斷的邊數最大。對於邊 $(i,j) \in E$，目標函數為：</p>
+
+                    <div class="math-block">
+                        $$C_{ij} = \frac{1}{2}(1 - Z_i Z_j)$$
+                    </div>
+
+                    <p>總的目標函數是：</p>
+
+                    <div class="math-block">
+                        $$H_C = \sum_{(i,j) \in E} \frac{1}{2}(1 - Z_i Z_j)$$
+                    </div>
+
+                    <h3>QAOA 電路實現</h3>
+
+                    <p>對於 Max-Cut 問題，QAOA 電路的每一層包含：</p>
+
+                    <ol>
+                        <li><strong>問題層：</strong>$e^{-i\gamma H_C} = \prod_{(i,j) \in E} e^{-i\gamma \frac{1}{2}(1 - Z_i Z_j)}$</li>
+                        <li><strong>混合層：</strong>$e^{-i\beta H_B} = \prod_{i=1}^n e^{-i\beta X_i}$</li>
+                    </ol>
+
+                    <p>問題層可以用 CNOT 和 RZ 閘實現：</p>
+
+                    <div class="code-block">
+                        <pre><code>def qaoa_max_cut_layer(circuit, gamma, beta, edges):
+    # 問題層
+    for i, j in edges:
+        circuit.cx(i, j)
+        circuit.rz(gamma, j)
+        circuit.cx(i, j)
+    
+    # 混合層
+    for i in range(circuit.num_qubits):
+        circuit.rx(2 * beta, i)</code></pre>
+                    </div>
+
+                    <h2>理論分析</h2>
+
+                    <h3>性能保證</h3>
+
+                    <p>論文證明了對於 Max-Cut 問題，QAOA 在 $p=1$ 時可以達到至少 0.6924 的近似比，這超過了隨機演算法的 0.5。</p>
+
+                    <p>對於一般的 Max-Cut 問題，當 $p \to \infty$ 時，QAOA 可以找到最優解。</p>
+
+                    <h3>與絕熱量子計算的關係</h3>
+
+                    <p>QAOA 可以看作是絕熱量子計算的離散化版本。當 $p \to \infty$ 且參數適當選擇時，QAOA 收斂到絕熱演算法。</p>
+
+                    <h2>實驗結果</h2>
+
+                    <p>論文中展示了在小規模圖上的數值模擬結果：</p>
+
+                    <ul>
+                        <li>對於 3-正則圖，$p=1$ 的 QAOA 達到了約 0.6924 的近似比</li>
+                        <li>隨著 $p$ 的增加，性能持續改善</li>
+                        <li>對於某些特殊圖結構，QAOA 表現特別好</li>
+                    </ul>
+
+                    <h2>優勢與限制</h2>
+
+                    <h3>優勢</h3>
+
+                    <ol>
+                        <li><strong>NISQ 友好：</strong>電路深度相對較淺，適合近期量子計算機</li>
+                        <li><strong>理論保證：</strong>有明確的性能下界</li>
+                        <li><strong>通用性：</strong>可以應用於多種組合優化問題</li>
+                        <li><strong>可擴展：</strong>可以通過增加層數來改善性能</li>
+                    </ol>
+
+                    <h3>限制</h3>
+
+                    <ol>
+                        <li><strong>參數優化：</strong>需要經典優化來找到最佳參數</li>
+                        <li><strong>測量開銷：</strong>需要大量測量來估計期望值</li>
+                        <li><strong>局部最優：</strong>可能陷入局部最優解</li>
+                        <li><strong>噪聲敏感：</strong>在有噪聲的量子計算機上性能可能下降</li>
+                    </ol>
+
+                    <h2>後續發展</h2>
+
+                    <p>QAOA 發表後引發了大量後續研究：</p>
+
+                    <ul>
+                        <li><strong>變體演算法：</strong>如 Multi-Angle QAOA、QAOA+等</li>
+                        <li><strong>參數初始化：</strong>更好的參數初始化策略</li>
+                        <li><strong>硬體實現：</strong>在各種量子計算平台上的實現</li>
+                        <li><strong>應用擴展：</strong>應用到更多的優化問題</li>
+                    </ul>
+
+                    <h2>實作建議</h2>
+
+                    <h3>Qiskit 實現</h3>
+
+                    <div class="code-block">
+                        <pre><code>from qiskit import QuantumCircuit, QuantumRegister
+from qiskit.circuit import Parameter
+import numpy as np
+
+def create_qaoa_circuit(num_qubits, edges, p):
+    # 建立參數
+    gamma = [Parameter(f'γ_{i}') for i in range(p)]
+    beta = [Parameter(f'β_{i}') for i in range(p)]
+    
+    # 建立電路
+    qreg = QuantumRegister(num_qubits, 'q')
+    circuit = QuantumCircuit(qreg)
+    
+    # 初始化為均勻疊加態
+    circuit.h(range(num_qubits))
+    
+    # QAOA 層
+    for layer in range(p):
+        # 問題層
+        for i, j in edges:
+            circuit.cx(i, j)
+            circuit.rz(gamma[layer], j)
+            circuit.cx(i, j)
+        
+        # 混合層
+        for i in range(num_qubits):
+            circuit.rx(2 * beta[layer], i)
+    
+    return circuit, gamma, beta</code></pre>
+                    </div>
+
+                    <h3>參數優化</h3>
+
+                    <div class="code-block">
+                        <pre><code>from scipy.optimize import minimize
+from qiskit import execute, Aer
+
+def qaoa_objective(params, circuit, edges, backend):
+    # 分離 gamma 和 beta 參數
+    p = len(params) // 2
+    gamma_vals = params[:p]
+    beta_vals = params[p:]
+    
+    # 綁定參數
+    param_dict = {}
+    for i in range(p):
+        param_dict[f'γ_{i}'] = gamma_vals[i]
+        param_dict[f'β_{i}'] = beta_vals[i]
+    
+    bound_circuit = circuit.bind_parameters(param_dict)
+    
+    # 計算期望值
+    expectation = compute_expectation(bound_circuit, edges, backend)
+    
+    return -expectation  # 最小化負期望值
+
+# 優化參數
+initial_params = np.random.uniform(0, 2*np.pi, 2*p)
+result = minimize(qaoa_objective, initial_params, 
+                 args=(circuit, edges, backend),
+                 method='COBYLA')</code></pre>
+                    </div>
+
+                    <h2>個人思考與評價</h2>
+
+                    <p>QAOA 是量子計算領域的一個重要里程碑，它展示了如何在 NISQ 時代實現量子優勢。以下是我的一些思考：</p>
+
+                    <h3>理論貢獻</h3>
+
+                    <ul>
+                        <li>提供了一個具體的量子演算法框架，有明確的理論分析</li>
+                        <li>建立了變分量子演算法的重要範例</li>
+                        <li>連接了絕熱量子計算和變分量子演算法</li>
+                    </ul>
+
+                    <h3>實用價值</h3>
+
+                    <ul>
+                        <li>適合當前的量子硬體限制</li>
+                        <li>可以應用於實際的優化問題</li>
+                        <li>為量子機器學習奠定了基礎</li>
+                    </ul>
+
+                    <h3>未來方向</h3>
+
+                    <ul>
+                        <li>如何更有效地優化變分參數</li>
+                        <li>如何處理量子噪聲的影響</li>
+                        <li>如何擴展到更大規模的問題</li>
+                    </ul>
+
+                    <h2>相關資源</h2>
+
+                    <ul>
+                        <li><a href="https://qiskit.org/textbook/ch-applications/qaoa.html" target="_blank">Qiskit QAOA 教程</a></li>
+                        <li><a href="https://pennylane.ai/qml/demos/tutorial_qaoa_intro.html" target="_blank">PennyLane QAOA 示例</a></li>
+                        <li><a href="https://arxiv.org/abs/1411.4028" target="_blank">原始論文</a></li>
+                    </ul>
+
+                    <h2>結語</h2>
+
+                    <p>QAOA 代表了量子計算從理論走向實用的重要一步。雖然目前還面臨許多挑戰，但它為我們展示了量子計算在優化問題上的潛力。隨著量子硬體的不斷改進和演算法的持續優化，我相信 QAOA 及其變體將在未來發揮重要作用。</p>
+
+                    <div class="references">
+                        <h3>參考文獻</h3>
+                        <ul>
+                            <li>Farhi, E., Goldstone, J., & Gutmann, S. (2014). A quantum approximate optimization algorithm. arXiv preprint arXiv:1411.4028.</li>
+                            <li>Zhou, L., Wang, S. T., Choi, S., Pichler, H., & Lukin, M. D. (2020). Quantum approximate optimization algorithm: Performance, mechanism, and implementation on near-term devices. Physical Review X, 10(2), 021067.</li>
+                            <li>Hadfield, S., Wang, Z., O'Gorman, B., Rieffel, E. G., Venturelli, D., & Biswas, R. (2019). From the quantum approximate optimization algorithm to a quantum alternating operator ansatz. Algorithms, 12(2), 34.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <footer class="article-footer">
+                    <div class="article-navigation">
+                        <a href="../index.html#blog" class="back-to-blog">← 返回部落格</a>
+                        <div class="share-buttons">
+                            <span>分享：</span>
+                            <a href="#" onclick="shareArticle('twitter')">Twitter</a>
+                            <a href="#" onclick="shareArticle('linkedin')">LinkedIn</a>
+                            <a href="#" onclick="shareArticle('email')">Email</a>
+                        </div>
+                    </div>
+                </footer>
+            </article>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 何明璟. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+    <script>
+        function shareArticle(platform) {
+            const url = window.location.href;
+            const title = document.title;
+            
+            switch(platform) {
+                case 'twitter':
+                    window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`);
+                    break;
+                case 'linkedin':
+                    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`);
+                    break;
+                case 'email':
+                    window.location.href = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(url)}`;
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>
+

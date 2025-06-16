@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>量子計算基礎學習筆記 - 何明璟</title>
+    <link rel="stylesheet" href="../styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <h1 class="nav-title"><a href="../index.html">何明璟</a></h1>
+                <ul class="nav-menu">
+                    <li><a href="../index.html#about">關於我</a></li>
+                    <li><a href="../index.html#cv">履歷</a></li>
+                    <li><a href="../index.html#projects">專案</a></li>
+                    <li><a href="../index.html#research">研究</a></li>
+                    <li><a href="../index.html#notes">學習筆記</a></li>
+                    <li><a href="../index.html#blog">部落格</a></li>
+                    <li><a href="../index.html#contact">聯絡</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="article-main">
+        <div class="container">
+            <article class="article-content">
+                <header class="article-header">
+                    <h1>量子計算基礎學習筆記</h1>
+                    <div class="article-meta">
+                        <span class="date">最後更新：2025年1月15日</span>
+                        <span class="category">學習筆記</span>
+                        <div class="tags">
+                            <span class="tag">量子計算</span>
+                            <span class="tag">量子力學</span>
+                            <span class="tag">線性代數</span>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="article-body">
+                    <div class="note-intro">
+                        <p>這份筆記整理了量子計算的基礎概念，包括量子位元、量子閘和量子演算法的核心原理。適合初學者建立量子計算的數學基礎。</p>
+                    </div>
+
+                    <div class="table-of-contents">
+                        <h2>目錄</h2>
+                        <ul>
+                            <li><a href="#quantum-bits">1. 量子位元基礎</a></li>
+                            <li><a href="#quantum-states">2. 量子狀態表示</a></li>
+                            <li><a href="#quantum-gates">3. 量子閘操作</a></li>
+                            <li><a href="#measurement">4. 量子測量</a></li>
+                            <li><a href="#entanglement">5. 量子糾纏</a></li>
+                            <li><a href="#algorithms">6. 基本量子演算法</a></li>
+                            <li><a href="#exercises">7. 練習題</a></li>
+                        </ul>
+                    </div>
+
+                    <section id="quantum-bits">
+                        <h2>1. 量子位元基礎</h2>
+
+                        <h3>1.1 經典位元 vs 量子位元</h3>
+                        <p>經典位元只能處於兩種確定狀態之一：0 或 1。而量子位元（qubit）可以處於這兩種狀態的疊加態。</p>
+
+                        <div class="comparison-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>特性</th>
+                                        <th>經典位元</th>
+                                        <th>量子位元</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>可能狀態</td>
+                                        <td>0 或 1</td>
+                                        <td>$\alpha|0\rangle + \beta|1\rangle$</td>
+                                    </tr>
+                                    <tr>
+                                        <td>資訊容量</td>
+                                        <td>1 bit</td>
+                                        <td>2 個複數（無限資訊）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>可複製性</td>
+                                        <td>可以任意複製</td>
+                                        <td>不可複製（No-cloning theorem）</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3>1.2 量子位元的數學表示</h3>
+                        <p>量子位元的一般狀態可以寫成：</p>
+                        <div class="math-block">
+                            $$|\psi\rangle = \alpha|0\rangle + \beta|1\rangle$$
+                        </div>
+
+                        <p>其中：</p>
+                        <ul>
+                            <li>$\alpha, \beta \in \mathbb{C}$ 是複數振幅</li>
+                            <li>$|0\rangle, |1\rangle$ 是計算基底</li>
+                            <li>歸一化條件：$|\alpha|^2 + |\beta|^2 = 1$</li>
+                        </ul>
+
+                        <div class="example-box">
+                            <h4>範例 1.1：常見的量子狀態</h4>
+                            <ul>
+                                <li>$|0\rangle$：確定的 0 狀態</li>
+                                <li>$|1\rangle$：確定的 1 狀態</li>
+                                <li>$|+\rangle = \frac{1}{\sqrt{2}}(|0\rangle + |1\rangle)$：等權重疊加態</li>
+                                <li>$|-\rangle = \frac{1}{\sqrt{2}}(|0\rangle - |1\rangle)$：相位相反的疊加態</li>
+                            </ul>
+                        </div>
+
+                        <h3>1.3 Bloch 球表示</h3>
+                        <p>任何單一量子位元狀態都可以在 Bloch 球面上表示：</p>
+                        <div class="math-block">
+                            $$|\psi\rangle = \cos\frac{\theta}{2}|0\rangle + e^{i\phi}\sin\frac{\theta}{2}|1\rangle$$
+                        </div>
+
+                        <p>其中 $\theta \in [0, \pi]$ 是極角，$\phi \in [0, 2\pi)$ 是方位角。</p>
+                    </section>
+
+                    <section id="quantum-states">
+                        <h2>2. 量子狀態表示</h2>
+
+                        <h3>2.1 向量表示</h3>
+                        <p>量子狀態可以用列向量表示：</p>
+                        <div class="math-block">
+                            $$|0\rangle = \begin{pmatrix} 1 \\ 0 \end{pmatrix}, \quad |1\rangle = \begin{pmatrix} 0 \\ 1 \end{pmatrix}$$
+                        </div>
+
+                        <p>一般狀態：</p>
+                        <div class="math-block">
+                            $$|\psi\rangle = \alpha|0\rangle + \beta|1\rangle = \begin{pmatrix} \alpha \\ \beta \end{pmatrix}$$
+                        </div>
+
+                        <h3>2.2 多量子位元系統</h3>
+                        <p>$n$ 個量子位元的系統狀態空間是 $2^n$ 維的。例如，兩個量子位元系統：</p>
+                        <div class="math-block">
+                            $$|\psi\rangle = \alpha_{00}|00\rangle + \alpha_{01}|01\rangle + \alpha_{10}|10\rangle + \alpha_{11}|11\rangle$$
+                        </div>
+
+                        <p>其中歸一化條件為：</p>
+                        <div class="math-block">
+                            $$|\alpha_{00}|^2 + |\alpha_{01}|^2 + |\alpha_{10}|^2 + |\alpha_{11}|^2 = 1$$
+                        </div>
+
+                        <div class="example-box">
+                            <h4>範例 2.1：Bell 態</h4>
+                            <p>四個 Bell 態是兩量子位元系統的最大糾纏態：</p>
+                            <div class="math-block">
+                                $$|\Phi^+\rangle = \frac{1}{\sqrt{2}}(|00\rangle + |11\rangle)$$
+                                $$|\Phi^-\rangle = \frac{1}{\sqrt{2}}(|00\rangle - |11\rangle)$$
+                                $$|\Psi^+\rangle = \frac{1}{\sqrt{2}}(|01\rangle + |10\rangle)$$
+                                $$|\Psi^-\rangle = \frac{1}{\sqrt{2}}(|01\rangle - |10\rangle)$$
+                            </div>
+                        </div>
+
+                        <h3>2.3 張量積</h3>
+                        <p>多量子位元系統的狀態是單一量子位元狀態的張量積：</p>
+                        <div class="math-block">
+                            $$|\psi_1\rangle \otimes |\psi_2\rangle = |\psi_1\rangle |\psi_2\rangle = |\psi_1 \psi_2\rangle$$
+                        </div>
+
+                        <p>例如：</p>
+                        <div class="math-block">
+                            $$|0\rangle \otimes |1\rangle = |01\rangle = \begin{pmatrix} 1 \\ 0 \end{pmatrix} \otimes \begin{pmatrix} 0 \\ 1 \end{pmatrix} = \begin{pmatrix} 0 \\ 1 \\ 0 \\ 0 \end{pmatrix}$$
+                        </div>
+                    </section>
+
+                    <section id="quantum-gates">
+                        <h2>3. 量子閘操作</h2>
+
+                        <h3>3.1 單量子位元閘</h3>
+
+                        <h4>Pauli 閘</h4>
+                        <div class="gate-grid">
+                            <div class="gate-item">
+                                <h5>Pauli-X (NOT 閘)</h5>
+                                <div class="math-block">
+                                    $$X = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}$$
+                                </div>
+                                <p>效果：$X|0\rangle = |1\rangle$, $X|1\rangle = |0\rangle$</p>
+                            </div>
+
+                            <div class="gate-item">
+                                <h5>Pauli-Y</h5>
+                                <div class="math-block">
+                                    $$Y = \begin{pmatrix} 0 & -i \\ i & 0 \end{pmatrix}$$
+                                </div>
+                                <p>效果：$Y|0\rangle = i|1\rangle$, $Y|1\rangle = -i|0\rangle$</p>
+                            </div>
+
+                            <div class="gate-item">
+                                <h5>Pauli-Z</h5>
+                                <div class="math-block">
+                                    $$Z = \begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}$$
+                                </div>
+                                <p>效果：$Z|0\rangle = |0\rangle$, $Z|1\rangle = -|1\rangle$</p>
+                            </div>
+                        </div>
+
+                        <h4>Hadamard 閘</h4>
+                        <p>Hadamard 閘是量子計算中最重要的閘之一：</p>
+                        <div class="math-block">
+                            $$H = \frac{1}{\sqrt{2}}\begin{pmatrix} 1 & 1 \\ 1 & -1 \end{pmatrix}$$
+                        </div>
+
+                        <p>效果：</p>
+                        <div class="math-block">
+                            $$H|0\rangle = \frac{1}{\sqrt{2}}(|0\rangle + |1\rangle) = |+\rangle$$
+                            $$H|1\rangle = \frac{1}{\sqrt{2}}(|0\rangle - |1\rangle) = |-\rangle$$
+                        </div>
+
+                        <h4>相位閘</h4>
+                        <div class="math-block">
+                            $$S = \begin{pmatrix} 1 & 0 \\ 0 & i \end{pmatrix}, \quad T = \begin{pmatrix} 1 & 0 \\ 0 & e^{i\pi/4} \end{pmatrix}$$
+                        </div>
+
+                        <h3>3.2 雙量子位元閘</h3>
+
+                        <h4>CNOT 閘</h4>
+                        <p>受控非閘（CNOT）是最重要的雙量子位元閘：</p>
+                        <div class="math-block">
+                            $$\text{CNOT} = \begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 1 & 0 \end{pmatrix}$$
+                        </div>
+
+                        <p>真值表：</p>
+                        <div class="truth-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>輸入</th>
+                                        <th>輸出</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>$|00\rangle$</td><td>$|00\rangle$</td></tr>
+                                    <tr><td>$|01\rangle$</td><td>$|01\rangle$</td></tr>
+                                    <tr><td>$|10\rangle$</td><td>$|11\rangle$</td></tr>
+                                    <tr><td>$|11\rangle$</td><td>$|10\rangle$</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="example-box">
+                            <h4>範例 3.1：創建 Bell 態</h4>
+                            <p>使用 Hadamard 和 CNOT 閘創建 Bell 態：</p>
+                            <ol>
+                                <li>初始狀態：$|00\rangle$</li>
+                                <li>對第一個量子位元應用 H：$\frac{1}{\sqrt{2}}(|0\rangle + |1\rangle) \otimes |0\rangle = \frac{1}{\sqrt{2}}(|00\rangle + |10\rangle)$</li>
+                                <li>應用 CNOT：$\frac{1}{\sqrt{2}}(|00\rangle + |11\rangle) = |\Phi^+\rangle$</li>
+                            </ol>
+                        </div>
+                    </section>
+
+                    <section id="measurement">
+                        <h2>4. 量子測量</h2>
+
+                        <h3>4.1 投影測量</h3>
+                        <p>在計算基底 $\{|0\rangle, |1\rangle\}$ 中測量狀態 $|\psi\rangle = \alpha|0\rangle + \beta|1\rangle$：</p>
+
+                        <ul>
+                            <li>測量到 $|0\rangle$ 的機率：$P(0) = |\alpha|^2$</li>
+                            <li>測量到 $|1\rangle$ 的機率：$P(1) = |\beta|^2$</li>
+                            <li>測量後狀態塌縮到對應的本徵態</li>
+                        </ul>
+
+                        <h3>4.2 期望值</h3>
+                        <p>可觀測量 $A$ 在狀態 $|\psi\rangle$ 中的期望值：</p>
+                        <div class="math-block">
+                            $$\langle A \rangle = \langle \psi | A | \psi \rangle$$
+                        </div>
+
+                        <div class="example-box">
+                            <h4>範例 4.1：Pauli-Z 測量</h4>
+                            <p>對狀態 $|\psi\rangle = \frac{1}{\sqrt{2}}(|0\rangle + |1\rangle)$ 進行 Z 測量：</p>
+                            <div class="math-block">
+                                $$\langle Z \rangle = \langle \psi | Z | \psi \rangle = \frac{1}{2}(\langle 0| + \langle 1|) Z (|0\rangle + |1\rangle) = \frac{1}{2}(1 - 1) = 0$$
+                            </div>
+                        </div>
+
+                        <h3>4.3 多量子位元測量</h3>
+                        <p>對於多量子位元系統，可以選擇測量部分或全部量子位元。部分測量會導致剩餘系統的狀態改變。</p>
+                    </section>
+
+                    <section id="entanglement">
+                        <h2>5. 量子糾纏</h2>
+
+                        <h3>5.1 糾纏的定義</h3>
+                        <p>如果一個多量子位元狀態不能寫成各個量子位元狀態的張量積，則稱為糾纏態。</p>
+
+                        <p><strong>可分離態：</strong></p>
+                        <div class="math-block">
+                            $$|\psi\rangle = |\psi_1\rangle \otimes |\psi_2\rangle$$
+                        </div>
+
+                        <p><strong>糾纏態：</strong></p>
+                        <div class="math-block">
+                            $$|\psi\rangle \neq |\psi_1\rangle \otimes |\psi_2\rangle \text{ 對任何 } |\psi_1\rangle, |\psi_2\rangle$$
+                        </div>
+
+                        <h3>5.2 糾纏度量</h3>
+
+                        <h4>Schmidt 分解</h4>
+                        <p>任何純態都可以寫成 Schmidt 分解：</p>
+                        <div class="math-block">
+                            $$|\psi\rangle = \sum_{i} \sqrt{\lambda_i} |u_i\rangle |v_i\rangle$$
+                        </div>
+
+                        <p>其中 $\lambda_i$ 是 Schmidt 係數，Schmidt 數等於非零 $\lambda_i$ 的個數。</p>
+
+                        <h4>糾纏熵</h4>
+                        <p>對於純態，糾纏熵定義為：</p>
+                        <div class="math-block">
+                            $$S = -\sum_{i} \lambda_i \log_2 \lambda_i$$
+                        </div>
+
+                        <div class="example-box">
+                            <h4>範例 5.1：Bell 態的糾纏</h4>
+                            <p>對於 $|\Phi^+\rangle = \frac{1}{\sqrt{2}}(|00\rangle + |11\rangle)$：</p>
+                            <ul>
+                                <li>Schmidt 係數：$\lambda_1 = \lambda_2 = \frac{1}{2}$</li>
+                                <li>Schmidt 數：2（最大糾纏）</li>
+                                <li>糾纏熵：$S = -2 \times \frac{1}{2} \log_2 \frac{1}{2} = 1$ bit</li>
+                            </ul>
+                        </div>
+
+                        <h3>5.3 糾纏的應用</h3>
+                        <ul>
+                            <li><strong>量子隱形傳態：</strong>利用糾纏傳輸量子狀態</li>
+                            <li><strong>量子密鑰分發：</strong>基於糾纏的安全通信</li>
+                            <li><strong>量子計算：</strong>糾纏是量子優勢的來源</li>
+                        </ul>
+                    </section>
+
+                    <section id="algorithms">
+                        <h2>6. 基本量子演算法</h2>
+
+                        <h3>6.1 Deutsch 演算法</h3>
+                        <p>Deutsch 演算法是第一個展現量子優勢的演算法，用於判斷函數是常數還是平衡的。</p>
+
+                        <h4>問題設定</h4>
+                        <p>給定函數 $f: \{0,1\} \to \{0,1\}$，判斷 $f$ 是：</p>
+                        <ul>
+                            <li><strong>常數：</strong>$f(0) = f(1)$</li>
+                            <li><strong>平衡：</strong>$f(0) \neq f(1)$</li>
+                        </ul>
+
+                        <h4>量子電路</h4>
+                        <ol>
+                            <li>初始化：$|0\rangle |1\rangle$</li>
+                            <li>應用 Hadamard：$\frac{1}{\sqrt{2}}(|0\rangle + |1\rangle) \frac{1}{\sqrt{2}}(|0\rangle - |1\rangle)$</li>
+                            <li>應用 Oracle $U_f$</li>
+                            <li>對第一個量子位元再次應用 Hadamard</li>
+                            <li>測量第一個量子位元</li>
+                        </ol>
+
+                        <p><strong>結果：</strong></p>
+                        <ul>
+                            <li>測量到 0 → 函數是常數</li>
+                            <li>測量到 1 → 函數是平衡</li>
+                        </ul>
+
+                        <h3>6.2 Deutsch-Jozsa 演算法</h3>
+                        <p>Deutsch 演算法的推廣，處理 $n$ 位元函數。</p>
+
+                        <h3>6.3 Grover 搜索演算法</h3>
+                        <p>在無序資料庫中搜索特定項目，提供二次加速。</p>
+
+                        <h4>問題設定</h4>
+                        <p>在 $N = 2^n$ 個項目中搜索滿足條件的項目。</p>
+
+                        <h4>演算法步驟</h4>
+                        <ol>
+                            <li>初始化為均勻疊加態</li>
+                            <li>重複 $\approx \frac{\pi}{4}\sqrt{N}$ 次 Grover 迭代</li>
+                            <li>測量得到答案</li>
+                        </ol>
+
+                        <p>每次 Grover 迭代包含：</p>
+                        <ul>
+                            <li>Oracle 操作：標記目標項目</li>
+                            <li>擴散操作：關於平均值反射</li>
+                        </ul>
+                    </section>
+
+                    <section id="exercises">
+                        <h2>7. 練習題</h2>
+
+                        <div class="exercise-box">
+                            <h4>練習 7.1：量子狀態計算</h4>
+                            <p>計算以下操作的結果：</p>
+                            <ol>
+                                <li>$H|0\rangle = ?$</li>
+                                <li>$X|+\rangle = ?$</li>
+                                <li>$Z|-\rangle = ?$</li>
+                            </ol>
+                        </div>
+
+                        <div class="exercise-box">
+                            <h4>練習 7.2：Bell 態製備</h4>
+                            <p>設計量子電路製備以下 Bell 態：</p>
+                            <ol>
+                                <li>$|\Phi^-\rangle = \frac{1}{\sqrt{2}}(|00\rangle - |11\rangle)$</li>
+                                <li>$|\Psi^+\rangle = \frac{1}{\sqrt{2}}(|01\rangle + |10\rangle)$</li>
+                            </ol>
+                        </div>
+
+                        <div class="exercise-box">
+                            <h4>練習 7.3：測量機率</h4>
+                            <p>對狀態 $|\psi\rangle = \frac{1}{2}|00\rangle + \frac{\sqrt{3}}{2}|11\rangle$ 進行測量：</p>
+                            <ol>
+                                <li>在計算基底中測量的機率分布？</li>
+                                <li>只測量第一個量子位元的機率？</li>
+                                <li>測量第一個量子位元後，第二個量子位元的狀態？</li>
+                            </ol>
+                        </div>
+
+                        <div class="exercise-box">
+                            <h4>練習 7.4：糾纏判斷</h4>
+                            <p>判斷以下狀態是否為糾纏態：</p>
+                            <ol>
+                                <li>$|\psi_1\rangle = \frac{1}{\sqrt{2}}(|01\rangle + |10\rangle)$</li>
+                                <li>$|\psi_2\rangle = \frac{1}{2}(|00\rangle + |01\rangle + |10\rangle + |11\rangle)$</li>
+                                <li>$|\psi_3\rangle = \frac{1}{\sqrt{3}}|00\rangle + \frac{\sqrt{2}}{\sqrt{3}}|11\rangle$</li>
+                            </ol>
+                        </div>
+
+                        <h3>解答提示</h3>
+                        <details>
+                            <summary>點擊查看練習 7.1 解答</summary>
+                            <ol>
+                                <li>$H|0\rangle = \frac{1}{\sqrt{2}}(|0\rangle + |1\rangle) = |+\rangle$</li>
+                                <li>$X|+\rangle = X \cdot \frac{1}{\sqrt{2}}(|0\rangle + |1\rangle) = \frac{1}{\sqrt{2}}(|1\rangle + |0\rangle) = |+\rangle$</li>
+                                <li>$Z|-\rangle = Z \cdot \frac{1}{\sqrt{2}}(|0\rangle - |1\rangle) = \frac{1}{\sqrt{2}}(|0\rangle + |1\rangle) = |+\rangle$</li>
+                            </ol>
+                        </details>
+                    </section>
+
+                    <h2>學習資源推薦</h2>
+
+                    <div class="resources-grid">
+                        <div class="resource-category">
+                            <h3>教科書</h3>
+                            <ul>
+                                <li>Nielsen & Chuang: "Quantum Computation and Quantum Information"</li>
+                                <li>Mermin: "Quantum Computer Science"</li>
+                                <li>Hidary: "Quantum Computing: An Applied Approach"</li>
+                            </ul>
+                        </div>
+
+                        <div class="resource-category">
+                            <h3>線上課程</h3>
+                            <ul>
+                                <li><a href="https://qiskit.org/textbook/" target="_blank">IBM Qiskit Textbook</a></li>
+                                <li><a href="https://www.edx.org/course/quantum-mechanics-and-quantum-computation" target="_blank">Berkeley Quantum Mechanics Course</a></li>
+                                <li><a href="https://quantum.microsoft.com/en-us/experience/quantum-katas" target="_blank">Microsoft Quantum Katas</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="resource-category">
+                            <h3>實作平台</h3>
+                            <ul>
+                                <li><a href="https://qiskit.org/" target="_blank">IBM Qiskit</a></li>
+                                <li><a href="https://cirq.readthedocs.io/" target="_blank">Google Cirq</a></li>
+                                <li><a href="https://pennylane.ai/" target="_blank">Xanadu PennyLane</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h2>下一步學習建議</h2>
+
+                    <ol>
+                        <li><strong>深入線性代數：</strong>掌握向量空間、本徵值、本徵向量等概念</li>
+                        <li><strong>量子力學基礎：</strong>理解波函數、薛丁格方程式、測量理論</li>
+                        <li><strong>實作練習：</strong>使用 Qiskit 等平台實現基本量子演算法</li>
+                        <li><strong>進階演算法：</strong>學習 Shor、Grover、VQE、QAOA 等演算法</li>
+                        <li><strong>量子錯誤修正：</strong>了解量子錯誤修正碼和容錯量子計算</li>
+                    </ol>
+
+                    <div class="note-footer">
+                        <p><strong>最後更新：</strong>2025年1月15日</p>
+                        <p><strong>版本：</strong>1.2</p>
+                        <p><strong>作者：</strong>何明璟</p>
+                    </div>
+                </div>
+
+                <footer class="article-footer">
+                    <div class="article-navigation">
+                        <a href="../index.html#notes" class="back-to-blog">← 返回學習筆記</a>
+                        <div class="share-buttons">
+                            <span>分享：</span>
+                            <a href="#" onclick="shareArticle('twitter')">Twitter</a>
+                            <a href="#" onclick="shareArticle('linkedin')">LinkedIn</a>
+                            <a href="#" onclick="shareArticle('email')">Email</a>
+                        </div>
+                    </div>
+                </footer>
+            </article>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 何明璟. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+    <script>
+        function shareArticle(platform) {
+            const url = window.location.href;
+            const title = document.title;
+            
+            switch(platform) {
+                case 'twitter':
+                    window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`);
+                    break;
+                case 'linkedin':
+                    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`);
+                    break;
+                case 'email':
+                    window.location.href = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(url)}`;
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>
+

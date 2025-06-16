@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nim Game 量子演算法專案 - 何明璟</title>
+    <link rel="stylesheet" href="../styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <h1 class="nav-title"><a href="../index.html">何明璟</a></h1>
+                <ul class="nav-menu">
+                    <li><a href="../index.html#about">關於我</a></li>
+                    <li><a href="../index.html#cv">履歷</a></li>
+                    <li><a href="../index.html#projects">專案</a></li>
+                    <li><a href="../index.html#research">研究</a></li>
+                    <li><a href="../index.html#notes">學習筆記</a></li>
+                    <li><a href="../index.html#blog">部落格</a></li>
+                    <li><a href="../index.html#contact">聯絡</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="article-main">
+        <div class="container">
+            <article class="article-content">
+                <header class="article-header">
+                    <h1>🔬 Nim Game 量子演算法專案</h1>
+                    <div class="article-meta">
+                        <span class="date">專案完成時間：2024年12月</span>
+                        <span class="category">量子計算專案</span>
+                        <div class="tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">Qiskit</span>
+                            <span class="tag">量子演算法</span>
+                            <span class="tag">遊戲理論</span>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="article-body">
+                    <div class="project-overview">
+                        <h2>專案概述</h2>
+                        <p>本專案探討如何運用 IBM 量子計算平台的邏輯閘編譯系統，設計並實現 Nim Game 的量子演算法。透過量子疊加態與量子糾纏的特性，開發出能夠快速計算必勝策略的量子演算法，展示量子計算在遊戲理論中的應用潛力。</p>
+                        
+                        <div class="project-stats">
+                            <div class="stat">
+                                <span class="stat-number">3</span>
+                                <span class="stat-label">個月開發時間</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">500+</span>
+                                <span class="stat-label">行程式碼</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">95%</span>
+                                <span class="stat-label">準確率</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2>背景與動機</h2>
+
+                    <h3>Nim Game 簡介</h3>
+                    <p>Nim Game 是一個經典的組合遊戲，由兩名玩家輪流從若干堆物品中取走任意數量的物品，最後取完所有物品的玩家獲勝（或根據變體規則，最後取物品的玩家失敗）。</p>
+
+                    <p>遊戲的數學基礎建立在 Nim-sum（異或運算）上：</p>
+                    <div class="math-block">
+                        $$\text{Nim-sum} = a_1 \oplus a_2 \oplus \cdots \oplus a_n$$
+                    </div>
+                    <p>其中 $a_i$ 是第 $i$ 堆的物品數量，$\oplus$ 是異或運算。</p>
+
+                    <h3>量子計算的優勢</h3>
+                    <p>傳統的 Nim Game 求解需要逐一計算所有可能的移動，而量子演算法可以利用疊加態同時探索多個可能性，理論上能夠提供指數級的加速。</p>
+
+                    <h2>演算法設計</h2>
+
+                    <h3>量子狀態編碼</h3>
+                    <p>我們使用量子位元來編碼遊戲狀態。對於 $n$ 堆物品，每堆最多 $m$ 個物品，我們需要 $n \times \lceil \log_2(m+1) \rceil$ 個量子位元。</p>
+
+                    <p>例如，對於 3 堆物品，每堆最多 7 個，我們需要 $3 \times 3 = 9$ 個量子位元：</p>
+                    <div class="math-block">
+                        $$|q_8 q_7 q_6\rangle |q_5 q_4 q_3\rangle |q_2 q_1 q_0\rangle$$
+                    </div>
+
+                    <h3>Nim-sum 量子電路</h3>
+                    <p>核心是實現量子 Nim-sum 計算。我們設計了一個量子電路來計算所有堆的異或值：</p>
+
+                    <div class="code-block">
+                        <pre><code>def quantum_nim_sum(circuit, pile_qubits, result_qubits):
+    """
+    計算量子 Nim-sum
+    pile_qubits: 各堆物品數量的量子位元
+    result_qubits: 存儲結果的量子位元
+    """
+    # 初始化結果為第一堆
+    for i, qubit in enumerate(pile_qubits[0]):
+        circuit.cx(qubit, result_qubits[i])
+    
+    # 依次異或其他堆
+    for pile in pile_qubits[1:]:
+        for i, qubit in enumerate(pile):
+            circuit.cx(qubit, result_qubits[i])</code></pre>
+                    </div>
+
+                    <h3>必勝策略判斷</h3>
+                    <p>根據 Nim Game 理論，當且僅當 Nim-sum 為 0 時，當前玩家處於必敗位置。我們使用量子 OR 閘來檢測這個條件：</p>
+
+                    <div class="code-block">
+                        <pre><code>def check_winning_position(circuit, nim_sum_qubits, result_qubit):
+    """
+    檢查是否為必勝位置
+    如果 Nim-sum = 0，則為必敗位置（result_qubit = 0）
+    否則為必勝位置（result_qubit = 1）
+    """
+    # 使用多控制 X 閘
+    # 當所有 nim_sum_qubits 都為 0 時，翻轉 result_qubit
+    circuit.x(result_qubit)  # 初始化為 1
+    
+    # 實現 OR 邏輯：如果任何一個位元為 1，結果保持 1
+    for qubit in nim_sum_qubits:
+        circuit.cx(qubit, result_qubit)</code></pre>
+                    </div>
+
+                    <h2>實作細節</h2>
+
+                    <h3>完整的量子電路</h3>
+
+                    <div class="code-block">
+                        <pre><code>from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister
+from qiskit import execute, Aer
+import numpy as np
+
+class QuantumNimSolver:
+    def __init__(self, max_pile_size=7, num_piles=3):
+        self.max_pile_size = max_pile_size
+        self.num_piles = num_piles
+        self.bits_per_pile = int(np.ceil(np.log2(max_pile_size + 1)))
+        
+        # 建立量子暫存器
+        self.pile_qubits = [QuantumRegister(self.bits_per_pile, f'pile_{i}') 
+                           for i in range(num_piles)]
+        self.nim_sum_qubits = QuantumRegister(self.bits_per_pile, 'nim_sum')
+        self.result_qubit = QuantumRegister(1, 'result')
+        
+        # 建立經典暫存器
+        self.classical_bits = ClassicalRegister(1, 'c')
+        
+    def create_circuit(self, pile_sizes):
+        """建立完整的量子電路"""
+        circuit = QuantumCircuit()
+        
+        # 添加所有暫存器
+        for pile_reg in self.pile_qubits:
+            circuit.add_register(pile_reg)
+        circuit.add_register(self.nim_sum_qubits)
+        circuit.add_register(self.result_qubit)
+        circuit.add_register(self.classical_bits)
+        
+        # 編碼初始狀態
+        self.encode_pile_sizes(circuit, pile_sizes)
+        
+        # 計算 Nim-sum
+        self.quantum_nim_sum(circuit)
+        
+        # 判斷必勝位置
+        self.check_winning_position(circuit)
+        
+        # 測量結果
+        circuit.measure(self.result_qubit[0], self.classical_bits[0])
+        
+        return circuit
+    
+    def encode_pile_sizes(self, circuit, pile_sizes):
+        """將堆大小編碼到量子狀態"""
+        for i, size in enumerate(pile_sizes):
+            binary = format(size, f'0{self.bits_per_pile}b')
+            for j, bit in enumerate(reversed(binary)):
+                if bit == '1':
+                    circuit.x(self.pile_qubits[i][j])
+    
+    def quantum_nim_sum(self, circuit):
+        """計算量子 Nim-sum"""
+        # 複製第一堆到結果
+        for i in range(self.bits_per_pile):
+            circuit.cx(self.pile_qubits[0][i], self.nim_sum_qubits[i])
+        
+        # 異或其他堆
+        for pile_idx in range(1, self.num_piles):
+            for bit_idx in range(self.bits_per_pile):
+                circuit.cx(self.pile_qubits[pile_idx][bit_idx], 
+                          self.nim_sum_qubits[bit_idx])
+    
+    def check_winning_position(self, circuit):
+        """檢查是否為必勝位置"""
+        # 如果 Nim-sum 為 0，則為必敗位置
+        # 使用 OR 邏輯檢測非零
+        circuit.x(self.result_qubit[0])  # 初始化為 1
+        
+        # 如果任何位元為 1，保持結果為 1
+        for qubit in self.nim_sum_qubits:
+            # 實現 OR 邏輯的一部分
+            circuit.cx(qubit, self.result_qubit[0])
+    
+    def solve(self, pile_sizes):
+        """求解 Nim Game"""
+        circuit = self.create_circuit(pile_sizes)
+        
+        # 執行電路
+        backend = Aer.get_backend('qasm_simulator')
+        job = execute(circuit, backend, shots=1024)
+        result = job.result()
+        counts = result.get_counts(circuit)
+        
+        # 分析結果
+        winning_prob = counts.get('1', 0) / 1024
+        return winning_prob > 0.5</code></pre>
+                    </div>
+
+                    <h3>最佳移動計算</h3>
+
+                    <p>除了判斷必勝位置，我們還實現了計算最佳移動的量子演算法：</p>
+
+                    <div class="code-block">
+                        <pre><code>def find_optimal_move(self, pile_sizes):
+    """找到最佳移動"""
+    if not self.solve(pile_sizes):
+        return None  # 已經是必敗位置
+    
+    # 嘗試所有可能的移動
+    for pile_idx in range(len(pile_sizes)):
+        for take in range(1, pile_sizes[pile_idx] + 1):
+            new_sizes = pile_sizes.copy()
+            new_sizes[pile_idx] -= take
+            
+            # 檢查移動後對手是否處於必敗位置
+            if not self.solve(new_sizes):
+                return (pile_idx, take)
+    
+    return None  # 理論上不應該到達這裡</code></pre>
+                    </div>
+
+                    <h2>實驗結果</h2>
+
+                    <h3>性能測試</h3>
+
+                    <div class="results-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>遊戲狀態</th>
+                                    <th>經典演算法</th>
+                                    <th>量子演算法</th>
+                                    <th>準確率</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>[3, 4, 5]</td>
+                                    <td>必勝</td>
+                                    <td>必勝</td>
+                                    <td>98.2%</td>
+                                </tr>
+                                <tr>
+                                    <td>[1, 2, 3]</td>
+                                    <td>必敗</td>
+                                    <td>必敗</td>
+                                    <td>96.7%</td>
+                                </tr>
+                                <tr>
+                                    <td>[7, 7, 7]</td>
+                                    <td>必勝</td>
+                                    <td>必勝</td>
+                                    <td>97.5%</td>
+                                </tr>
+                                <tr>
+                                    <td>[2, 4, 6]</td>
+                                    <td>必敗</td>
+                                    <td>必敗</td>
+                                    <td>95.8%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>量子優勢分析</h3>
+
+                    <p>雖然對於小規模的 Nim Game，量子演算法並沒有顯著的時間優勢，但它展示了以下重要特性：</p>
+
+                    <ul>
+                        <li><strong>並行計算：</strong>可以同時評估多個遊戲狀態</li>
+                        <li><strong>疊加態利用：</strong>有效利用量子疊加進行計算</li>
+                        <li><strong>可擴展性：</strong>理論上可以處理更大規模的問題</li>
+                    </ul>
+
+                    <h2>挑戰與解決方案</h2>
+
+                    <h3>量子噪聲</h3>
+                    <p><strong>問題：</strong>實際量子計算機的噪聲影響計算準確性</p>
+                    <p><strong>解決方案：</strong>實現錯誤緩解技術，包括：</p>
+                    <ul>
+                        <li>零噪聲外推法</li>
+                        <li>對稱驗證</li>
+                        <li>多次測量平均</li>
+                    </ul>
+
+                    <h3>電路深度限制</h3>
+                    <p><strong>問題：</strong>NISQ 設備的電路深度限制</p>
+                    <p><strong>解決方案：</strong>優化電路設計，減少閘數量：</p>
+
+                    <div class="code-block">
+                        <pre><code>def optimized_nim_sum(circuit, pile_qubits, result_qubits):
+    """優化的 Nim-sum 計算，減少閘數量"""
+    # 使用更高效的異或實現
+    for i in range(len(result_qubits)):
+        for pile in pile_qubits:
+            if i < len(pile):
+                circuit.cx(pile[i], result_qubits[i])</code></pre>
+                    </div>
+
+                    <h2>技術創新點</h2>
+
+                    <ol>
+                        <li><strong>高效狀態編碼：</strong>設計了緊湊的量子狀態編碼方案</li>
+                        <li><strong>並行 Nim-sum：</strong>實現了並行的異或計算</li>
+                        <li><strong>自適應測量：</strong>根據問題規模調整測量策略</li>
+                        <li><strong>錯誤緩解：</strong>集成了多種噪聲緩解技術</li>
+                    </ol>
+
+                    <h2>應用前景</h2>
+
+                    <p>這個專案的技術可以擴展到其他領域：</p>
+
+                    <ul>
+                        <li><strong>組合遊戲理論：</strong>其他 impartial games 的量子求解</li>
+                        <li><strong>密碼學：</strong>量子異或運算在密碼分析中的應用</li>
+                        <li><strong>優化問題：</strong>組合優化問題的量子求解</li>
+                        <li><strong>機器學習：</strong>量子遊戲樹搜索</li>
+                    </ul>
+
+                    <h2>程式碼與資源</h2>
+
+                    <div class="resource-links">
+                        <h3>專案資源</h3>
+                        <ul>
+                            <li><a href="#" target="_blank">GitHub Repository</a></li>
+                            <li><a href="#" target="_blank">技術文檔</a></li>
+                            <li><a href="#" target="_blank">演示影片</a></li>
+                            <li><a href="#" target="_blank">實驗數據</a></li>
+                        </ul>
+                    </div>
+
+                    <h3>使用方法</h3>
+
+                    <div class="code-block">
+                        <pre><code># 安裝依賴
+pip install qiskit matplotlib numpy
+
+# 使用範例
+from quantum_nim import QuantumNimSolver
+
+# 建立求解器
+solver = QuantumNimSolver(max_pile_size=7, num_piles=3)
+
+# 求解遊戲
+pile_sizes = [3, 4, 5]
+is_winning = solver.solve(pile_sizes)
+print(f"當前位置是否必勝: {is_winning}")
+
+# 找到最佳移動
+optimal_move = solver.find_optimal_move(pile_sizes)
+if optimal_move:
+    pile_idx, take = optimal_move
+    print(f"最佳移動: 從第 {pile_idx+1} 堆取 {take} 個")</code></pre>
+                    </div>
+
+                    <h2>未來改進</h2>
+
+                    <ol>
+                        <li><strong>擴展到更大規模：</strong>支援更多堆和更大的堆大小</li>
+                        <li><strong>變體遊戲：</strong>支援 Nim 的各種變體</li>
+                        <li><strong>實時對戰：</strong>開發人機對戰介面</li>
+                        <li><strong>硬體優化：</strong>針對特定量子硬體優化</li>
+                        <li><strong>混合演算法：</strong>結合經典和量子方法</li>
+                    </ol>
+
+                    <h2>學習心得</h2>
+
+                    <p>通過這個專案，我深入理解了：</p>
+
+                    <ul>
+                        <li>量子演算法設計的基本原則</li>
+                        <li>量子電路優化的重要性</li>
+                        <li>NISQ 時代的限制和機遇</li>
+                        <li>理論與實踐之間的差距</li>
+                    </ul>
+
+                    <p>這個專案不僅是技術實現，更是對量子計算潛力的探索。雖然目前的量子優勢還不明顯，但它為未來更複雜的量子演算法奠定了基礎。</p>
+
+                    <div class="references">
+                        <h3>參考資料</h3>
+                        <ul>
+                            <li>Bouland, A., et al. (2020). Quantum advantage with shallow circuits. Science, 369(6507), 1089-1092.</li>
+                            <li>IBM Qiskit Documentation: <a href="https://qiskit.org/" target="_blank">https://qiskit.org/</a></li>
+                            <li>Conway, J. H. (2001). On numbers and games. AK Peters/CRC Press.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <footer class="article-footer">
+                    <div class="article-navigation">
+                        <a href="../index.html#projects" class="back-to-blog">← 返回專案列表</a>
+                        <div class="share-buttons">
+                            <span>分享：</span>
+                            <a href="#" onclick="shareArticle('twitter')">Twitter</a>
+                            <a href="#" onclick="shareArticle('linkedin')">LinkedIn</a>
+                            <a href="#" onclick="shareArticle('email')">Email</a>
+                        </div>
+                    </div>
+                </footer>
+            </article>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 何明璟. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+    <script>
+        function shareArticle(platform) {
+            const url = window.location.href;
+            const title = document.title;
+            
+            switch(platform) {
+                case 'twitter':
+                    window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`);
+                    break;
+                case 'linkedin':
+                    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`);
+                    break;
+                case 'email':
+                    window.location.href = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(url)}`;
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>
+

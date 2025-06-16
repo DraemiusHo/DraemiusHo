@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>量子計算入門：從量子位元到量子演算法 - 何明璟</title>
+    <link rel="stylesheet" href="../styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <h1 class="nav-title"><a href="../index.html">何明璟</a></h1>
+                <ul class="nav-menu">
+                    <li><a href="../index.html#about">關於我</a></li>
+                    <li><a href="../index.html#cv">履歷</a></li>
+                    <li><a href="../index.html#projects">專案</a></li>
+                    <li><a href="../index.html#research">研究</a></li>
+                    <li><a href="../index.html#notes">學習筆記</a></li>
+                    <li><a href="../index.html#blog">部落格</a></li>
+                    <li><a href="../index.html#contact">聯絡</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="article-main">
+        <div class="container">
+            <article class="article-content">
+                <header class="article-header">
+                    <h1>量子計算入門：從量子位元到量子演算法</h1>
+                    <div class="article-meta">
+                        <span class="date">2025年1月15日</span>
+                        <span class="category">量子計算</span>
+                        <div class="tags">
+                            <span class="tag">量子計算</span>
+                            <span class="tag">教學</span>
+                            <span class="tag">Qiskit</span>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="article-body">
+                    <p>量子計算是一個令人著迷的領域，它利用量子力學的奇特性質來處理資訊。在這篇文章中，我將帶領大家從最基本的概念開始，逐步了解量子計算的核心原理。</p>
+
+                    <h2>什麼是量子位元？</h2>
+
+                    <p>在經典計算中，資訊的基本單位是位元（bit），它只能處於 0 或 1 的狀態。但在量子計算中，我們使用量子位元（qubit），它可以處於 0 和 1 的疊加態。</p>
+
+                    <p>數學上，我們可以將量子位元的狀態表示為：</p>
+
+                    <div class="math-block">
+                        $$|\psi\rangle = \alpha|0\rangle + \beta|1\rangle$$
+                    </div>
+
+                    <p>其中 $\alpha$ 和 $\beta$ 是複數係數，滿足歸一化條件：</p>
+
+                    <div class="math-block">
+                        $$|\alpha|^2 + |\beta|^2 = 1$$
+                    </div>
+
+                    <p>這個方程式告訴我們，量子位元可以同時處於 0 和 1 的狀態，這就是量子疊加的概念。</p>
+
+                    <h2>量子閘操作</h2>
+
+                    <p>就像經典計算有邏輯閘一樣，量子計算也有量子閘。以下是一些基本的量子閘：</p>
+
+                    <h3>Pauli-X 閘（量子 NOT 閘）</h3>
+
+                    <p>Pauli-X 閘的作用類似於經典的 NOT 閘：</p>
+
+                    <div class="math-block">
+                        $$X|0\rangle = |1\rangle$$
+                        $$X|1\rangle = |0\rangle$$
+                    </div>
+
+                    <p>矩陣表示為：</p>
+                    <div class="math-block">
+                        $$X = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}$$
+                    </div>
+
+                    <h3>Hadamard 閘</h3>
+
+                    <p>Hadamard 閘是量子計算中最重要的閘之一，它可以創造疊加態：</p>
+
+                    <div class="math-block">
+                        $$H|0\rangle = \frac{1}{\sqrt{2}}(|0\rangle + |1\rangle)$$
+                        $$H|1\rangle = \frac{1}{\sqrt{2}}(|0\rangle - |1\rangle)$$
+                    </div>
+
+                    <p>矩陣表示為：</p>
+                    <div class="math-block">
+                        $$H = \frac{1}{\sqrt{2}}\begin{pmatrix} 1 & 1 \\ 1 & -1 \end{pmatrix}$$
+                    </div>
+
+                    <h3>CNOT 閘</h3>
+
+                    <p>CNOT（受控非）閘是一個雙量子位元閘，它根據控制位元的狀態來決定是否對目標位元執行 X 操作：</p>
+
+                    <div class="math-block">
+                        $$\text{CNOT}|00\rangle = |00\rangle$$
+                        $$\text{CNOT}|01\rangle = |01\rangle$$
+                        $$\text{CNOT}|10\rangle = |11\rangle$$
+                        $$\text{CNOT}|11\rangle = |10\rangle$$
+                    </div>
+
+                    <h2>用 Qiskit 實作量子電路</h2>
+
+                    <p>讓我們用 IBM 的 Qiskit 來實作一個簡單的量子電路：</p>
+
+                    <div class="code-block">
+                        <pre><code>from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister
+from qiskit import execute, Aer
+from qiskit.visualization import plot_histogram
+import matplotlib.pyplot as plt
+
+# 建立量子電路
+qreg = QuantumRegister(2, 'q')
+creg = ClassicalRegister(2, 'c')
+circuit = QuantumCircuit(qreg, creg)
+
+# 建立 Bell 態
+circuit.h(qreg[0])  # 對第一個量子位元應用 Hadamard 閘
+circuit.cx(qreg[0], qreg[1])  # 應用 CNOT 閘
+
+# 測量
+circuit.measure(qreg, creg)
+
+# 顯示電路
+print(circuit)
+
+# 執行模擬
+backend = Aer.get_backend('qasm_simulator')
+job = execute(circuit, backend, shots=1024)
+result = job.result()
+counts = result.get_counts(circuit)
+
+print("測量結果：", counts)</code></pre>
+                    </div>
+
+                    <p>這個電路創造了一個 Bell 態，這是一個最大糾纏態：</p>
+
+                    <div class="math-block">
+                        $$|\Phi^+\rangle = \frac{1}{\sqrt{2}}(|00\rangle + |11\rangle)$$
+                    </div>
+
+                    <h2>量子糾纏</h2>
+
+                    <p>量子糾纏是量子力學中最神奇的現象之一。當兩個或多個量子位元處於糾纏態時，測量其中一個量子位元會立即影響其他量子位元的狀態，無論它們相距多遠。</p>
+
+                    <p>在上面的 Bell 態例子中，如果我們測量第一個量子位元得到 0，那麼第二個量子位元也必定是 0；如果第一個是 1，第二個也必定是 1。</p>
+
+                    <h2>簡單的量子演算法：Deutsch 演算法</h2>
+
+                    <p>Deutsch 演算法是第一個展現量子優勢的演算法。它可以用一次查詢就確定一個函數是常數函數還是平衡函數，而經典演算法需要兩次查詢。</p>
+
+                    <div class="code-block">
+                        <pre><code>def deutsch_algorithm(oracle):
+    # 建立量子電路
+    qreg = QuantumRegister(2, 'q')
+    creg = ClassicalRegister(1, 'c')
+    circuit = QuantumCircuit(qreg, creg)
+    
+    # 初始化
+    circuit.x(qreg[1])  # 將輔助位元設為 |1⟩
+    circuit.h(qreg[0])  # 對輸入位元應用 Hadamard
+    circuit.h(qreg[1])  # 對輔助位元應用 Hadamard
+    
+    # 應用 Oracle
+    oracle(circuit, qreg)
+    
+    # 最後的 Hadamard
+    circuit.h(qreg[0])
+    
+    # 測量
+    circuit.measure(qreg[0], creg[0])
+    
+    return circuit
+
+# 常數函數 Oracle（f(x) = 0）
+def constant_zero_oracle(circuit, qreg):
+    # 什麼都不做
+    pass
+
+# 常數函數 Oracle（f(x) = 1）
+def constant_one_oracle(circuit, qreg):
+    circuit.x(qreg[1])
+
+# 平衡函數 Oracle（f(x) = x）
+def balanced_oracle(circuit, qreg):
+    circuit.cx(qreg[0], qreg[1])</code></pre>
+                    </div>
+
+                    <h2>量子計算的應用前景</h2>
+
+                    <p>量子計算在許多領域都有巨大的應用潛力：</p>
+
+                    <ol>
+                        <li><strong>密碼學</strong>：Shor 演算法可以有效分解大整數，威脅現有的 RSA 加密</li>
+                        <li><strong>優化問題</strong>：量子退火可以解決複雜的組合優化問題</li>
+                        <li><strong>機器學習</strong>：量子機器學習演算法可能在某些任務上超越經典方法</li>
+                        <li><strong>化學模擬</strong>：量子計算機可以模擬分子和化學反應</li>
+                        <li><strong>金融建模</strong>：量子演算法可以用於風險分析和投資組合優化</li>
+                    </ol>
+
+                    <h2>學習建議</h2>
+
+                    <p>如果你想深入學習量子計算，我建議：</p>
+
+                    <ol>
+                        <li><strong>掌握線性代數</strong>：量子力學的數學基礎</li>
+                        <li><strong>學習量子力學基礎</strong>：理解量子系統的行為</li>
+                        <li><strong>實作練習</strong>：使用 Qiskit、Cirq 或 PennyLane 等框架</li>
+                        <li><strong>閱讀經典教材</strong>：如 Nielsen & Chuang 的 "Quantum Computation and Quantum Information"</li>
+                        <li><strong>參與社群</strong>：加入量子計算的學習社群和討論群組</li>
+                    </ol>
+
+                    <h2>結語</h2>
+
+                    <p>量子計算是一個充滿挑戰和機遇的領域。雖然目前的量子計算機還處於早期階段，但隨著技術的不斷進步，我們有理由相信量子計算將在未來改變我們處理資訊的方式。</p>
+
+                    <p>希望這篇入門文章能幫助大家對量子計算有初步的了解。如果你對量子計算有任何問題或想要深入討論，歡迎與我聯繫！</p>
+
+                    <div class="references">
+                        <h3>參考資料</h3>
+                        <ul>
+                            <li>Nielsen, M. A., & Chuang, I. L. (2010). Quantum computation and quantum information.</li>
+                            <li>IBM Qiskit Textbook: <a href="https://qiskit.org/textbook/" target="_blank">https://qiskit.org/textbook/</a></li>
+                            <li>Quantum Computing: An Applied Approach by Hidary, J. D.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <footer class="article-footer">
+                    <div class="article-navigation">
+                        <a href="../index.html#blog" class="back-to-blog">← 返回部落格</a>
+                        <div class="share-buttons">
+                            <span>分享：</span>
+                            <a href="#" onclick="shareArticle('twitter')">Twitter</a>
+                            <a href="#" onclick="shareArticle('linkedin')">LinkedIn</a>
+                            <a href="#" onclick="shareArticle('email')">Email</a>
+                        </div>
+                    </div>
+                </footer>
+            </article>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 何明璟. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+    <script>
+        function shareArticle(platform) {
+            const url = window.location.href;
+            const title = document.title;
+            
+            switch(platform) {
+                case 'twitter':
+                    window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`);
+                    break;
+                case 'linkedin':
+                    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`);
+                    break;
+                case 'email':
+                    window.location.href = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(url)}`;
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>
+

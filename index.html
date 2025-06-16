@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>何明璟的個人網站</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <h1 class="nav-title">何明璟</h1>
+                <ul class="nav-menu">
+                    <li><a href="#about">關於我</a></li>
+                    <li><a href="#cv">履歷</a></li>
+                    <li><a href="#projects">專案</a></li>
+                    <li><a href="#research">研究</a></li>
+                    <li><a href="#notes">學習筆記</a></li>
+                    <li><a href="#blog">部落格</a></li>
+                    <li><a href="#contact">聯絡</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- 關於我 -->
+        <section id="about" class="section">
+            <div class="container">
+                <h2>關於我</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>我是何明璟，一位對量子計算和物理教育充滿熱忱的研究者與教育工作者。目前專注於量子演算法研究、計算物理模擬，以及創新的物理教學方法開發。</p>
+                        
+                        <p>我的研究興趣涵蓋：</p>
+                        <ul>
+                            <li><strong>量子計算：</strong>量子演算法設計、量子機器學習、NISQ 演算法</li>
+                            <li><strong>計算物理：</strong>多體系統模擬、天體力學、數值方法</li>
+                            <li><strong>數學建模：</strong>幾何分析、組合數學、機率論</li>
+                            <li><strong>教育創新：</strong>物理教學法、科技融入教學、教學工具開發</li>
+                        </ul>
+
+                        <p>我相信科學研究與教育應該相輔相成，透過深入的研究來豐富教學內容，同時透過教學來啟發新的研究方向。</p>
+                    </div>
+                    <div class="about-image">
+                        <div class="profile-placeholder">
+                            <span>📸</span>
+                            <p>個人照片</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 履歷 -->
+        <section id="cv" class="section">
+            <div class="container">
+                <h2>個人履歷</h2>
+                
+                <div class="cv-section">
+                    <h3>基本資料</h3>
+                    <div class="cv-content">
+                        <p><strong>姓名：</strong>何明璟 (Ming-Chin Ho)</p>
+                        <p><strong>Email：</strong>mcho90208@gmail.com</p>
+                        <p><strong>LinkedIn：</strong><a href="https://www.linkedin.com/in/ming-chin-ho-38015b235/" target="_blank">ming-chin-ho</a></p>
+                        <p><strong>GitHub：</strong><a href="https://github.com/draemius" target="_blank">draemius</a></p>
+                    </div>
+                </div>
+
+                <div class="cv-section">
+                    <h3>教育背景</h3>
+                    <div class="cv-content">
+                        <div class="cv-item">
+                            <h4>國立臺灣師範大學 物理學系</h4>
+                            <p class="cv-period">2019 - 2023</p>
+                            <p>主修物理學，專精於量子力學、電磁學、統計力學等核心課程</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cv-section">
+                    <h3>工作經驗</h3>
+                    <div class="cv-content">
+                        <div class="cv-item">
+                            <h4>物理家教老師</h4>
+                            <p class="cv-period">2020 - 至今</p>
+                            <ul>
+                                <li>教授高中物理、大學普通物理課程</li>
+                                <li>開發創新教學方法，提升學生學習成效</li>
+                                <li>設計互動式教學工具和實驗演示</li>
+                                <li>指導學生進行科學專題研究</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cv-section">
+                    <h3>技能專長</h3>
+                    <div class="cv-content">
+                        <div class="skills-grid">
+                            <div class="skill-category">
+                                <h4>程式語言</h4>
+                                <ul>
+                                    <li>Python (專精)</li>
+                                    <li>JavaScript (熟練)</li>
+                                    <li>C++ (中等)</li>
+                                    <li>MATLAB (熟練)</li>
+                                </ul>
+                            </div>
+                            <div class="skill-category">
+                                <h4>量子計算</h4>
+                                <ul>
+                                    <li>IBM Qiskit</li>
+                                    <li>Xanadu PennyLane</li>
+                                    <li>Google Cirq</li>
+                                    <li>量子演算法設計</li>
+                                </ul>
+                            </div>
+                            <div class="skill-category">
+                                <h4>科學計算</h4>
+                                <ul>
+                                    <li>NumPy/SciPy</li>
+                                    <li>Matplotlib</li>
+                                    <li>Pandas</li>
+                                    <li>SymPy</li>
+                                </ul>
+                            </div>
+                            <div class="skill-category">
+                                <h4>其他工具</h4>
+                                <ul>
+                                    <li>LaTeX</li>
+                                    <li>Git/GitHub</li>
+                                    <li>GeoGebra</li>
+                                    <li>Autodesk Fusion</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 專案 -->
+        <section id="projects" class="section">
+            <div class="container">
+                <h2>專案作品</h2>
+                
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <h3><a href="projects/nim-game-quantum.html">🔬 Nim Game 量子演算法</a></h3>
+                        <p>使用 IBM Qiskit 實現 Nim Game 的量子演算法，探索量子計算在遊戲理論中的應用。</p>
+                        <div class="project-tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">Qiskit</span>
+                            <span class="tag">量子演算法</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <h3>🌌 拉格朗日點模擬器</h3>
+                        <p>建立三體問題的數值模擬系統，分析拉格朗日點附近的軌道動力學行為。</p>
+                        <div class="project-tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">數值模擬</span>
+                            <span class="tag">天體力學</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <h3>📐 完美三視圖生成器</h3>
+                        <p>研究並實現具有相同三視圖的三維幾何體生成演算法。</p>
+                        <div class="project-tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">3D 幾何</span>
+                            <span class="tag">視覺化</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <h3>🎓 量子計算教學平台</h3>
+                        <p>開發互動式量子計算學習平台，幫助初學者理解量子概念。</p>
+                        <div class="project-tags">
+                            <span class="tag">React</span>
+                            <span class="tag">D3.js</span>
+                            <span class="tag">教育科技</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <h3>🔢 正多邊形鑲嵌分析</h3>
+                        <p>分析正多邊形鑲嵌圖形中對角線形成的封閉區域性質。</p>
+                        <div class="project-tags">
+                            <span class="tag">數學建模</span>
+                            <span class="tag">幾何分析</span>
+                            <span class="tag">GeoGebra</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <h3>📱 物理實驗模擬 App</h3>
+                        <p>開發手機端物理實驗模擬應用，讓學生隨時隨地進行虛擬實驗。</p>
+                        <div class="project-tags">
+                            <span class="tag">React Native</span>
+                            <span class="tag">物理引擎</span>
+                            <span class="tag">AR</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 研究成果 -->
+        <section id="research" class="section">
+            <div class="container">
+                <h2>研究成果</h2>
+                
+                <div class="research-content">
+                    <div class="research-area">
+                        <h3>量子計算與量子演算法</h3>
+                        <p>專注於量子計算理論、量子演算法設計，以及量子計算在實際問題中的應用研究。</p>
+                        
+                        <div class="research-projects">
+                            <div class="research-item">
+                                <h4>應用IBM量子邏輯閘編譯系統演算Nim Game規則之必勝手段</h4>
+                                <p>本研究探討如何運用IBM量子計算平台的邏輯閘編譯系統，設計並實現Nim Game的量子演算法。透過量子疊加態與量子糾纏的特性，開發出能夠快速計算必勝策略的量子演算法。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="research-area">
+                        <h3>計算物理與數值模擬</h3>
+                        <p>運用數值方法解決複雜物理問題，包括多體系統動力學模擬與特殊約束條件下的運動分析。</p>
+                        
+                        <div class="research-projects">
+                            <div class="research-item">
+                                <h4>拉格朗日點環境模擬，特殊限制下的三體運動</h4>
+                                <p>針對限制性三體問題中的拉格朗日點進行深入分析，特別關注在特殊約束條件下的軌道動力學行為。透過數值模擬方法，探討不同初始條件對系統穩定性的影響。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="research-area">
+                        <h3>數學物理與幾何分析</h3>
+                        <p>探討數學結構在物理問題中的應用，特別是幾何性質與物理現象的關聯性研究。</p>
+                        
+                        <div class="research-projects">
+                            <div class="research-item">
+                                <h4>探討正多邊形鑲嵌圖形中對角學曲線所形成的封閉區域</h4>
+                                <p>研究正多邊形鑲嵌結構中，由對角線所形成的複雜幾何圖形的面積與周長性質。透過數學分析與計算幾何方法，建立了一般性的計算公式。</p>
+                            </div>
+
+                            <div class="research-item">
+                                <h4>怎麼看都一樣—完美三視圖之性質探討</h4>
+                                <p>探討具有相同三視圖的三維幾何體的性質與構造方法。透過立體幾何分析，建立了完美三視圖的數學模型，並設計了相應的構造演算法。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 學習筆記 -->
+        <section id="notes" class="section">
+            <div class="container">
+                <h2>學習筆記</h2>
+                
+                <div class="notes-intro">
+                    <p>這裡收錄了我在學習過程中整理的各種筆記，涵蓋量子計算、物理學、數學等領域。所有筆記都支援數學公式顯示。</p>
+                </div>
+
+                <div class="notes-grid">
+                    <div class="note-card">
+                        <h3><a href="notes/quantum-computing-basics.html">量子計算基礎</a></h3>
+                        <p>量子位元、量子閘和量子演算法的基本概念</p>
+                        <div class="math-example">
+                            <p>量子位元狀態：$|\psi\rangle = \alpha|0\rangle + \beta|1\rangle$</p>
+                            <p>其中 $|\alpha|^2 + |\beta|^2 = 1$</p>
+                        </div>
+                    </div>
+
+                    <div class="note-card">
+                        <h3>線性代數在量子計算中的應用</h3>
+                        <p>深入探討線性代數概念如何在量子計算中發揮關鍵作用</p>
+                        <div class="math-example">
+                            <p>Hadamard 閘：$H = \frac{1}{\sqrt{2}}\begin{pmatrix} 1 & 1 \\ 1 & -1 \end{pmatrix}$</p>
+                        </div>
+                    </div>
+
+                    <div class="note-card">
+                        <h3>電磁學筆記</h3>
+                        <p>Maxwell 方程組與電磁波理論</p>
+                        <div class="math-example">
+                            <p>Gauss 定律：$\nabla \cdot \mathbf{E} = \frac{\rho}{\epsilon_0}$</p>
+                        </div>
+                    </div>
+
+                    <div class="note-card">
+                        <h3>量子力學數學基礎</h3>
+                        <p>Schrödinger 方程與量子力學的數學框架</p>
+                        <div class="math-example">
+                            <p>時間相關 Schrödinger 方程：</p>
+                            <p>$i\hbar \frac{\partial}{\partial t}|\psi(t)\rangle = \hat{H}|\psi(t)\rangle$</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 部落格 -->
+        <section id="blog" class="section">
+            <div class="container">
+                <h2>部落格文章</h2>
+                
+                <div class="blog-grid">
+                    <article class="blog-post">
+                        <h3><a href="blog/quantum-computing-intro.html">量子計算入門：從量子位元到量子演算法</a></h3>
+                        <p class="post-meta">2025年1月15日 | 量子計算, 教學</p>
+                        <p>介紹量子計算的基本概念，包括量子位元、量子閘和簡單的量子演算法。透過實際的 Qiskit 程式碼範例，帶領讀者進入量子計算的世界。</p>
+                        <div class="post-tags">
+                            <span class="tag">量子計算</span>
+                            <span class="tag">教學</span>
+                            <span class="tag">Qiskit</span>
+                        </div>
+                    </article>
+
+                    <article class="blog-post">
+                        <h3><a href="blog/qaoa-paper-review.html">論文閱讀筆記：Quantum Approximate Optimization Algorithm (QAOA)</a></h3>
+                        <p class="post-meta">2025年1月10日 | 論文閱讀, QAOA</p>
+                        <p>深入解析 QAOA 演算法的原理、實作與應用。探討這個重要的變分量子演算法如何解決組合優化問題。</p>
+                        <div class="post-tags">
+                            <span class="tag">論文閱讀</span>
+                            <span class="tag">QAOA</span>
+                            <span class="tag">量子優化</span>
+                        </div>
+                    </article>
+
+                    <article class="blog-post">
+                        <h3>教學心得：如何讓學生愛上物理</h3>
+                        <p class="post-meta">2025年1月5日 | 教學心得</p>
+                        <p>分享我在物理教學中的經驗與心得，探討如何激發學生對物理的興趣，以及如何運用現代科技改善教學效果。</p>
+                        <div class="post-tags">
+                            <span class="tag">教學</span>
+                            <span class="tag">物理教育</span>
+                            <span class="tag">學習方法</span>
+                        </div>
+                    </article>
+
+                    <article class="blog-post">
+                        <h3>論文閱讀：Variational Quantum Eigensolver (VQE) 演算法深度解析</h3>
+                        <p class="post-meta">2024年12月20日 | 論文閱讀, VQE</p>
+                        <p>深入分析變分量子特徵求解器的理論基礎、實作細節與應用前景。這是量子化學計算中的重要演算法。</p>
+                        <div class="post-tags">
+                            <span class="tag">論文閱讀</span>
+                            <span class="tag">VQE</span>
+                            <span class="tag">量子化學</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- 聯絡 -->
+        <section id="contact" class="section">
+            <div class="container">
+                <h2>聯絡我</h2>
+                
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <h3>聯絡資訊</h3>
+                        <div class="contact-item">
+                            <strong>Email：</strong>
+                            <a href="mailto:mcho90208@gmail.com">mcho90208@gmail.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <strong>LinkedIn：</strong>
+                            <a href="https://www.linkedin.com/in/ming-chin-ho-38015b235/" target="_blank">ming-chin-ho</a>
+                        </div>
+                        <div class="contact-item">
+                            <strong>GitHub：</strong>
+                            <a href="https://github.com/draemius" target="_blank">draemius</a>
+                        </div>
+                    </div>
+
+                    <div class="contact-message">
+                        <h3>歡迎交流</h3>
+                        <p>如果您對我的研究或專案感興趣，或希望進行學術合作，歡迎透過以上方式聯繫我。我很樂意與同樣對量子計算、物理研究或教學創新有熱忱的朋友交流合作！</p>
+                        
+                        <p>特別歡迎以下類型的交流：</p>
+                        <ul>
+                            <li>量子計算研究合作</li>
+                            <li>物理教學方法討論</li>
+                            <li>開源專案貢獻</li>
+                            <li>學術會議與研討會</li>
+                            <li>教學資源分享</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 何明璟. All rights reserved.</p>
+            <p>Built with ❤️ and a passion for quantum computing and physics education.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
